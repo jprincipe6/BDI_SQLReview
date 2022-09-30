@@ -1,1 +1,2 @@
-org/example/App.class
+com/sqlreview/connector/PostgreSqlConnection.class
+com/sqlreview/App.class
