@@ -1,4 +1,4 @@
-package com.sqlreview.api;
+package com.sqlreview.entity;
 
 public class Conference {
     private Integer confId;
