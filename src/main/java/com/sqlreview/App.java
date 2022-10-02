@@ -135,8 +135,8 @@ public class App
             Number number = FAKER.number();
             int paperId = number.numberBetween(1, NUM_OF_DATA);
             int confId = number.numberBetween(1, NUM_OF_DATA);
-            int numAccepted = number.numberBetween(1, 4);
-            boolean isAccepted = (numAccepted == 1) ? false : true;
+            int numAccepted = number.numberBetween(1, 3);
+            boolean isAccepted = (numAccepted != 1) ? false : true;
 
             Calendar utilDate = Calendar.getInstance();
             utilDate.set(YEAR,number.numberBetween(1, 12), number.numberBetween(1, 30));
