@@ -32,6 +32,8 @@ public class App
     private static WritesOperatorFacadeImpl writesOperatorFacade;
 
     private static SubmitsOperatorFacadeImpl submitsOperatorFacade;
+
+    private static CitesOperatorFacadeImpl citesOperatorFacade;
     public static void main( String[] args )
     {
         init();
@@ -41,6 +43,7 @@ public class App
         insertConferences();
         insertWrites();
         insertSubmits();
+        insertCites();
 
     }
 
@@ -51,6 +54,7 @@ public class App
         conferenceOperatorFacade = ConferenceOperatorFacadeImpl.getInstance();
         writesOperatorFacade = WritesOperatorFacadeImpl.getInstance();
         submitsOperatorFacade = SubmitsOperatorFacadeImpl.getInstance();
+        citesOperatorFacade= CitesOperatorFacadeImpl.getInstance();
     }
 
     private static void insertPapers(){
@@ -151,7 +155,30 @@ public class App
         }
     }
 
+    private static void insertCites(){
+        int i=1;
+        while (i <= NUM_OF_DATA){
+            Number number = FAKER.number();
+            int paperIdFrom = number.numberBetween(1, NUM_OF_DATA);
+            int paperIDto = number.numberBetween(1, NUM_OF_DATA);
+            if(citesOperatorFacade.isDuplicate(paperIdFrom, paperIDto)){
+                i = (NUM_OF_DATA - (NUM_OF_DATA-i)-1);
+            }else {
+                Cites testCites = new Cites(paperIdFrom, paperIDto);
+                try{
+                    citesOperatorFacade.addRow(testCites);
+                }catch (DaoException ex){
+                    throw new RuntimeException(ex);
+                }
+                i++;
+            }
+        }
+    }
+
     private static void cleanTables(){
+        if(!citesOperatorFacade.isEmpty()){
+            citesOperatorFacade.deleteTable();
+        }
         if(!submitsOperatorFacade.isEmpty()){
             submitsOperatorFacade.deleteTable();
         }
