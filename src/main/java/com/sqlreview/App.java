@@ -1,13 +1,13 @@
 package com.sqlreview;
 
-import com.github.javafaker.Book;
-import com.github.javafaker.Faker;
-import com.github.javafaker.Name;
-import com.github.javafaker.University;
+import com.github.javafaker.*;
+import com.github.javafaker.Number;
 import com.sqlreview.entity.Author;
+import com.sqlreview.entity.Conference;
 import com.sqlreview.entity.Paper;
 import com.sqlreview.exception.DaoException;
 import com.sqlreview.facade.entity.AuthorOperatorFacadeImpl;
+import com.sqlreview.facade.entity.ConferenceOperatorFacadeImpl;
 import com.sqlreview.facade.entity.PaperOperatorFacadeImpl;
 
 import java.util.logging.Logger;
@@ -26,12 +26,15 @@ public class App
     private static PaperOperatorFacadeImpl paperOperatorFacade;
 
     private static AuthorOperatorFacadeImpl authorOperatorFacade;
+
+    private static ConferenceOperatorFacadeImpl conferenceOperatorFacade;
     public static void main( String[] args )
     {
         init();
         cleanTables();
         insertPapers();
         insertAuthors();
+        insertConferences();
 
     }
 
@@ -39,6 +42,7 @@ public class App
         FAKER = new Faker();
         paperOperatorFacade = PaperOperatorFacadeImpl.getInstance();
         authorOperatorFacade = AuthorOperatorFacadeImpl.getInstance();
+        conferenceOperatorFacade = ConferenceOperatorFacadeImpl.getInstance();
     }
 
     private static void insertPapers(){
@@ -74,12 +78,31 @@ public class App
 
     }
 
+    private static void insertConferences(){
+        for (int i = 1; i <= NUM_OF_DATE; i++){
+            Number number = FAKER.number();
+            Pokemon pokemon = FAKER.pokemon();
+            int ranking = number.numberBetween(1, 10);
+            String name = pokemon.name();
+
+            Conference testConference = new Conference(i,name,ranking);
+            try{
+                conferenceOperatorFacade.addRow(testConference);
+            }catch (DaoException ex){
+                throw new RuntimeException(ex);
+            }
+
+        }
+    }
     private static void cleanTables(){
         if (!paperOperatorFacade.isEmpty()){
             paperOperatorFacade.deleteTable();
         }
         if (!authorOperatorFacade.isEmpty()){
             authorOperatorFacade.deleteTable();
+        }
+        if(!conferenceOperatorFacade.isEmpty()){
+            conferenceOperatorFacade.deleteTable();
         }
     }
 }

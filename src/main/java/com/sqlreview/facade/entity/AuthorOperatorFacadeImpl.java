@@ -24,7 +24,8 @@ public class AuthorOperatorFacadeImpl implements OperatorFacade<Author> {
         if (idPaper.isEmpty()){
             throw new AddRecordException();
         }
-        return idPaper.get().intValue();    }
+        return idPaper.get().intValue();
+    }
 
     @Override
     public void deleteRow(Author author) {
