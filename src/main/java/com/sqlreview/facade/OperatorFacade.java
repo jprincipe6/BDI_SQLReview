@@ -6,4 +6,6 @@ public interface OperatorFacade <T>{
     int addRow(T t) throws DaoException;
 
     void deleteRow(T t);
+
+    void deleteTable();
 }

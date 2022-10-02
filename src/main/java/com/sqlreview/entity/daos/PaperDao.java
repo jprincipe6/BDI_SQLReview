@@ -72,7 +72,24 @@ public class PaperDao implements Dao<Paper, Integer> {
 
                 int numberOfDeletedRows = statement.executeUpdate();
 
-                LOGGER.log(Level.INFO, "Was the customer deleted successfully? {0}",
+                LOGGER.log(Level.INFO, "Was the paper deleted successfully? {0}",
+                        numberOfDeletedRows > 0);
+
+            } catch (SQLException ex) {
+                LOGGER.log(Level.SEVERE, null, ex);
+            }
+        });
+    }
+
+    @Override
+    public void truncateTable() {
+        String sql = "DELETE FROM paper";
+        connection.ifPresent(conn -> {
+            try (PreparedStatement statement = conn.prepareStatement(sql)) {
+
+                int numberOfDeletedRows = statement.executeUpdate();
+
+                LOGGER.log(Level.INFO, "Was the all Table deleted successfully? {0}",
                         numberOfDeletedRows > 0);
 
             } catch (SQLException ex) {

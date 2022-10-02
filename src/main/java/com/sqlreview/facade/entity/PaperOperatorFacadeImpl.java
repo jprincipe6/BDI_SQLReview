@@ -32,4 +32,9 @@ public class PaperOperatorFacadeImpl implements OperatorFacade<Paper> {
     public void deleteRow(Paper paper) {
         PAPER_DAO.delete(paper);
     }
+
+    @Override
+    public void deleteTable() {
+        PAPER_DAO.truncateTable();
+    }
 }
