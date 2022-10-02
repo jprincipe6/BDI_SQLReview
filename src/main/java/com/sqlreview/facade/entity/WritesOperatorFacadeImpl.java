@@ -41,4 +41,9 @@ public class WritesOperatorFacadeImpl implements OperatorFacade<Writes> {
     public boolean isEmpty() {
         return ((WRITES_DAO.isEmptyTable().get().intValue()==0)?true:false);
     }
+
+    @Override
+    public boolean isDuplicate(Integer pk1, Integer pk2) {
+        return ((WRITES_DAO.isDuplicate(pk1, pk2).get().intValue()==0)?false:true);
+    }
 }

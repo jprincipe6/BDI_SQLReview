@@ -11,4 +11,6 @@ public interface Dao <T, I>{
     void truncateTable();
 
     Optional<I> isEmptyTable();
+
+    Optional<I> isDuplicate(I a, I b);
 }

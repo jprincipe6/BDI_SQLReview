@@ -92,4 +92,25 @@ public class WritesDao implements Dao<Writes, Integer> {
             return isEmpty;
         });
     }
+
+    @Override
+    public Optional<Integer> isDuplicate(Integer a, Integer b) {
+        return  connection.flatMap(conn -> {
+            String sql = "select count(1) as isDuplicate where exists " +
+                    "(select * from writes where authorId=" +a+" and paperId="+b+");";
+            Optional<Integer> isDuplicate = Optional.empty();
+            try (Statement statement = conn.createStatement()) {
+                ResultSet resultSet = statement.executeQuery(sql);
+
+                if (resultSet.next()) {
+                    int empty = resultSet.getInt("isDuplicate");
+                    isDuplicate = Optional.of(empty);
+                    LOGGER.log(Level.INFO, "It's duplicate? {0}", empty);
+                }
+            } catch (SQLException ex) {
+                LOGGER.log(Level.SEVERE, null, ex);
+            }
+            return isDuplicate;
+        });
+    }
 }

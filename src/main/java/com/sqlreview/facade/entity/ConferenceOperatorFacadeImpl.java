@@ -43,4 +43,9 @@ public class ConferenceOperatorFacadeImpl implements OperatorFacade<Conference> 
     public boolean isEmpty() {
         return ((CONFERENCE_DAO.isEmptyTable().get().intValue()==0)?true:false);
     }
+
+    @Override
+    public boolean isDuplicate(Integer pk1, Integer pk2) {
+        return false;
+    }
 }

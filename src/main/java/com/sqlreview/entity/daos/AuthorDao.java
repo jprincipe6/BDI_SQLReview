@@ -99,4 +99,9 @@ public class AuthorDao implements Dao<Author, Integer> {
             return isEmpty;
         });
     }
+
+    @Override
+    public Optional<Integer> isDuplicate(Integer a, Integer b) {
+        return Optional.empty();
+    }
 }

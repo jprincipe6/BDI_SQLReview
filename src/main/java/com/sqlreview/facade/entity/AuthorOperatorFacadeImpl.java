@@ -41,4 +41,9 @@ public class AuthorOperatorFacadeImpl implements OperatorFacade<Author> {
     public boolean isEmpty() {
         return ((AUTHOR_DAO.isEmptyTable().get().intValue()==0)?true:false);
     }
+
+    @Override
+    public boolean isDuplicate(Integer pk1, Integer pk2) {
+        return false;
+    }
 }

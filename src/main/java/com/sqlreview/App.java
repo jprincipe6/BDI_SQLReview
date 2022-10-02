@@ -2,16 +2,14 @@ package com.sqlreview;
 
 import com.github.javafaker.*;
 import com.github.javafaker.Number;
-import com.sqlreview.entity.Author;
-import com.sqlreview.entity.Conference;
-import com.sqlreview.entity.Paper;
-import com.sqlreview.entity.Writes;
+import com.sqlreview.entity.*;
 import com.sqlreview.exception.DaoException;
-import com.sqlreview.facade.entity.AuthorOperatorFacadeImpl;
-import com.sqlreview.facade.entity.ConferenceOperatorFacadeImpl;
-import com.sqlreview.facade.entity.PaperOperatorFacadeImpl;
-import com.sqlreview.facade.entity.WritesOperatorFacadeImpl;
+import com.sqlreview.facade.entity.*;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.logging.Logger;
 
 /**
@@ -22,7 +20,7 @@ public class App
 {
     private static final Logger LOGGER =
             Logger.getLogger(App.class.getName());
-    private static final Integer NUM_OF_DATE = 20;
+    private static final Integer NUM_OF_DATA = 20;
 
     private static Faker FAKER;
     private static PaperOperatorFacadeImpl paperOperatorFacade;
@@ -32,6 +30,8 @@ public class App
     private static ConferenceOperatorFacadeImpl conferenceOperatorFacade;
 
     private static WritesOperatorFacadeImpl writesOperatorFacade;
+
+    private static SubmitsOperatorFacadeImpl submitsOperatorFacade;
     public static void main( String[] args )
     {
         init();
@@ -40,6 +40,7 @@ public class App
         insertAuthors();
         insertConferences();
         insertWrites();
+        insertSubmits();
 
     }
 
@@ -49,10 +50,11 @@ public class App
         authorOperatorFacade = AuthorOperatorFacadeImpl.getInstance();
         conferenceOperatorFacade = ConferenceOperatorFacadeImpl.getInstance();
         writesOperatorFacade = WritesOperatorFacadeImpl.getInstance();
+        submitsOperatorFacade = SubmitsOperatorFacadeImpl.getInstance();
     }
 
     private static void insertPapers(){
-        for (int i = 1; i <= NUM_OF_DATE; i++){
+        for (int i = 1; i <= NUM_OF_DATA; i++){
             Book book = FAKER.book();
             String lorem = FAKER.lorem().sentence();
             Paper testPaper = new Paper(i,book.title(),lorem);
@@ -65,7 +67,7 @@ public class App
     }
 
     private static void insertAuthors(){
-        for (int i = 1; i <= NUM_OF_DATE; i++){
+        for (int i = 1; i <= NUM_OF_DATA; i++){
             Name name = FAKER.name();
             University university = FAKER.university();
             String nameAuthor = name.firstName();
@@ -85,7 +87,7 @@ public class App
     }
 
     private static void insertConferences(){
-        for (int i = 1; i <= NUM_OF_DATE; i++){
+        for (int i = 1; i <= NUM_OF_DATA; i++){
             Number number = FAKER.number();
             Pokemon pokemon = FAKER.pokemon();
             int ranking = number.numberBetween(1, 10);
@@ -102,22 +104,57 @@ public class App
     }
 
     private static void insertWrites(){
-        for (int i = 1; i <= NUM_OF_DATE; i++){
+        int i=1;
+        while (i <= NUM_OF_DATA){
             Number number = FAKER.number();
-            int authorId = number.numberBetween(1, NUM_OF_DATE);
-            int paperId = number.numberBetween(1, NUM_OF_DATE);
+            int authorId = number.numberBetween(1, NUM_OF_DATA);
+            int paperId = number.numberBetween(1, NUM_OF_DATA);
+            if(writesOperatorFacade.isDuplicate(authorId, paperId)){
+                i = (NUM_OF_DATA - (NUM_OF_DATA-i)-1);
+            }else {
+                Writes testWrites = new Writes(authorId, paperId);
+                try{
+                    writesOperatorFacade.addRow(testWrites);
+                }catch (DaoException ex){
+                    throw new RuntimeException(ex);
+                }
+                i++;
+            }
+        }
 
-            Writes testWrites = new Writes(authorId, paperId);
-            try{
-                writesOperatorFacade.addRow(testWrites);
-            }catch (DaoException ex){
-                throw new RuntimeException(ex);
+    }
+
+    private static void insertSubmits(){
+        int i= 1;
+        while (i <= NUM_OF_DATA) {
+            Number number = FAKER.number();
+            int paperId = number.numberBetween(1, NUM_OF_DATA);
+            int confId = number.numberBetween(1, NUM_OF_DATA);
+            int numAccepted = number.numberBetween(1, 4);
+            boolean isAccepted = (numAccepted == 1) ? false : true;
+
+            Calendar utilDate = Calendar.getInstance();
+            utilDate.set(2023,number.numberBetween(1, 12), number.numberBetween(1, 30));
+            Date currentTimestamp = new Date(utilDate.getTime().getTime());
+            if(submitsOperatorFacade.isDuplicate(paperId, confId)){
+                i = (NUM_OF_DATA - (NUM_OF_DATA-i)-1);
+            }else {
+                Submits testSubmits = new Submits(paperId, confId, isAccepted, currentTimestamp);
+                try {
+                    submitsOperatorFacade.addRow(testSubmits);
+                } catch (DaoException ex) {
+                    throw new RuntimeException(ex);
+                }
+                i++;
             }
 
         }
     }
 
     private static void cleanTables(){
+        if(!submitsOperatorFacade.isEmpty()){
+            submitsOperatorFacade.deleteTable();
+        }
         if (!writesOperatorFacade.isEmpty()){
             writesOperatorFacade.deleteTable();
         }

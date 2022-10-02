@@ -10,4 +10,6 @@ public interface OperatorFacade <T>{
     void deleteTable();
 
     boolean isEmpty();
+
+    boolean isDuplicate(Integer pk1, Integer pk2);
 }
