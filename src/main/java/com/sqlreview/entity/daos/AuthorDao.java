@@ -2,7 +2,7 @@ package com.sqlreview.entity.daos;
 
 import com.sqlreview.connector.PostgreSqlConnection;
 import com.sqlreview.dao.Dao;
-import com.sqlreview.entity.Paper;
+import com.sqlreview.entity.Author;
 
 import java.sql.*;
 import java.util.Objects;
@@ -10,22 +10,22 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class PaperDao implements Dao<Paper, Integer> {
+public class AuthorDao implements Dao<Author, Integer> {
 
-    private static final Logger LOGGER =
-            Logger.getLogger(PaperDao.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Author.class.getName());
 
     private final  Optional<Connection> connection;
 
-    public PaperDao (){
+    public AuthorDao(){
         this.connection = PostgreSqlConnection.getConnection();
     }
 
+
     @Override
-    public Optional<Integer> save(Paper paper) {
-        String message = "The Paper to be added should not be null";
-        Paper nonNullPaper = Objects.requireNonNull(paper, message);
-        String sql = "INSERT INTO paper(paperId, title, abstract) VALUES (?,?,?)";
+    public Optional<Integer> save(Author author) {
+        String message = "The Author to be added should not be null";
+        Author nonNullAuthor = Objects.requireNonNull(author, message);
+        String sql = "INSERT INTO author(authorId, name, email, affiliation) VALUES (?,?,?,?)";
 
         return connection.flatMap(conn ->{
             Optional<Integer> generatedId = Optional.empty();
@@ -33,9 +33,10 @@ public class PaperDao implements Dao<Paper, Integer> {
                     sql,
                     Statement.RETURN_GENERATED_KEYS
             )){
-                statement.setInt(1,nonNullPaper.getPaperId());
-                statement.setString(2, nonNullPaper.getTitle());
-                statement.setString(3, nonNullPaper.getAbStract());
+                statement.setInt(1,nonNullAuthor.getAuthorId());
+                statement.setString(2, nonNullAuthor.getName());
+                statement.setString(3, nonNullAuthor.getEmail());
+                statement.setString(4, nonNullAuthor.getAffiliation());
 
                 int numberOfInsertedRows = statement.executeUpdate();
 
@@ -51,7 +52,7 @@ public class PaperDao implements Dao<Paper, Integer> {
                 LOGGER.log(
                         Level.INFO,
                         "{0} created successfully? {1}",
-                        new Object[]{nonNullPaper,
+                        new Object[]{nonNullAuthor,
                                 (numberOfInsertedRows > 0)});
             }catch (SQLException ex) {
                 LOGGER.log(Level.SEVERE, null, ex);
@@ -61,37 +62,18 @@ public class PaperDao implements Dao<Paper, Integer> {
     }
 
     @Override
-    public void delete(Paper paper) {
-        String message = "The Paper to be deleted should not be null";
-        Paper nonNullPaper = Objects.requireNonNull(paper, message);
-        String sql = "DELETE FROM paper WHERE paperId = ?";
-        connection.ifPresent(conn -> {
-            try (PreparedStatement statement = conn.prepareStatement(sql)) {
+    public void delete(Author author) {
 
-                statement.setInt(1, nonNullPaper.getPaperId());
-
-                int numberOfDeletedRows = statement.executeUpdate();
-
-                LOGGER.log(Level.INFO, "Was the paper deleted successfully? {0}",
-                        numberOfDeletedRows > 0);
-
-            } catch (SQLException ex) {
-                LOGGER.log(Level.SEVERE, null, ex);
-            }
-        });
     }
 
     @Override
     public void truncateTable() {
-        String sql = "DELETE FROM paper";
+        String sql = "DELETE FROM author";
         connection.ifPresent(conn -> {
             try (PreparedStatement statement = conn.prepareStatement(sql)) {
-
                 int numberOfDeletedRows = statement.executeUpdate();
-
                 LOGGER.log(Level.INFO, "Was the all Table deleted successfully? {0}",
                         numberOfDeletedRows > 0);
-
             } catch (SQLException ex) {
                 LOGGER.log(Level.SEVERE, null, ex);
             }
@@ -101,7 +83,7 @@ public class PaperDao implements Dao<Paper, Integer> {
     @Override
     public Optional<Integer> isEmptyTable() {
         return  connection.flatMap(conn -> {
-            String sql = "select count(1) as isEmpty where exists (select * from paper)";
+            String sql = "select count(1) as isEmpty where exists (select * from author)";
             Optional<Integer> isEmpty = Optional.empty();
             try (Statement statement = conn.createStatement()) {
                 ResultSet resultSet = statement.executeQuery(sql);
@@ -117,5 +99,4 @@ public class PaperDao implements Dao<Paper, Integer> {
             return isEmpty;
         });
     }
-
 }

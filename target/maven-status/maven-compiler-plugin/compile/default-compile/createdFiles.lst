@@ -1,2 +1,14 @@
-com/sqlreview/connector/PostgreSqlConnection.class
+com/sqlreview/entity/Submits.class
+com/sqlreview/entity/Paper.class
+com/sqlreview/facade/entity/PaperOperatorFacadeImpl.class
+com/sqlreview/exception/DaoException.class
+com/sqlreview/entity/Author.class
+com/sqlreview/entity/Conference.class
+com/sqlreview/entity/daos/PaperDao.class
 com/sqlreview/App.class
+com/sqlreview/entity/Writes.class
+com/sqlreview/facade/OperatorFacade.class
+com/sqlreview/entity/Cites.class
+com/sqlreview/exception/custum/AddRecordException.class
+com/sqlreview/connector/PostgreSqlConnection.class
+com/sqlreview/dao/Dao.class

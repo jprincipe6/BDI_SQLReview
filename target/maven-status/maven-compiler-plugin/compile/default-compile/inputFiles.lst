@@ -1,2 +1,14 @@
-/Users/principe/IdeaProjects/BDI_SQLReview/src/main/java/com/sqlreview/connector/PostgreSqlConnection.java
+/Users/principe/IdeaProjects/BDI_SQLReview/src/main/java/com/sqlreview/entity/Cites.java
+/Users/principe/IdeaProjects/BDI_SQLReview/src/main/java/com/sqlreview/exception/DaoException.java
+/Users/principe/IdeaProjects/BDI_SQLReview/src/main/java/com/sqlreview/exception/custum/AddRecordException.java
 /Users/principe/IdeaProjects/BDI_SQLReview/src/main/java/com/sqlreview/App.java
+/Users/principe/IdeaProjects/BDI_SQLReview/src/main/java/com/sqlreview/dao/Dao.java
+/Users/principe/IdeaProjects/BDI_SQLReview/src/main/java/com/sqlreview/entity/daos/PaperDao.java
+/Users/principe/IdeaProjects/BDI_SQLReview/src/main/java/com/sqlreview/facade/OperatorFacade.java
+/Users/principe/IdeaProjects/BDI_SQLReview/src/main/java/com/sqlreview/entity/Writes.java
+/Users/principe/IdeaProjects/BDI_SQLReview/src/main/java/com/sqlreview/entity/Paper.java
+/Users/principe/IdeaProjects/BDI_SQLReview/src/main/java/com/sqlreview/entity/Conference.java
+/Users/principe/IdeaProjects/BDI_SQLReview/src/main/java/com/sqlreview/connector/PostgreSqlConnection.java
+/Users/principe/IdeaProjects/BDI_SQLReview/src/main/java/com/sqlreview/facade/entity/PaperOperatorFacadeImpl.java
+/Users/principe/IdeaProjects/BDI_SQLReview/src/main/java/com/sqlreview/entity/Submits.java
+/Users/principe/IdeaProjects/BDI_SQLReview/src/main/java/com/sqlreview/entity/Author.java

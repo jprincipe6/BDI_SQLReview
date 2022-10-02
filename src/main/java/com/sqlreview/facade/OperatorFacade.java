@@ -8,4 +8,6 @@ public interface OperatorFacade <T>{
     void deleteRow(T t);
 
     void deleteTable();
+
+    boolean isEmpty();
 }

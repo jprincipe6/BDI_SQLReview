@@ -4,13 +4,13 @@ public class Author {
     private Integer authorId;
     private String name;
     private String email;
-    private String affilication;
+    private String affiliation;
 
     public Author(Integer authorId, String name, String email, String affilication) {
         this.authorId = authorId;
         this.name = name;
         this.email = email;
-        this.affilication = affilication;
+        this.affiliation = affilication;
     }
 
     public Integer getAuthorId() {
@@ -37,12 +37,12 @@ public class Author {
         this.email = email;
     }
 
-    public String getAffilication() {
-        return affilication;
+    public String getAffiliation() {
+        return affiliation;
     }
 
-    public void setAffilication(String affilication) {
-        this.affilication = affilication;
+    public void setAffiliation(String affiliation) {
+        this.affiliation = affiliation;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class Author {
                 "authorId=" + authorId +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", affilication='" + affilication + '\'' +
+                ", affilication='" + affiliation + '\'' +
                 '}';
     }
 }

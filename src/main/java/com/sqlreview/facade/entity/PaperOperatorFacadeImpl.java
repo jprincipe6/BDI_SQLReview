@@ -37,4 +37,9 @@ public class PaperOperatorFacadeImpl implements OperatorFacade<Paper> {
     public void deleteTable() {
         PAPER_DAO.truncateTable();
     }
+
+    @Override
+    public boolean isEmpty() {
+        return ((PAPER_DAO.isEmptyTable().get().intValue()==0)?true:false);
+    }
 }

@@ -9,4 +9,6 @@ public interface Dao <T, I>{
     void delete(T t);
 
     void truncateTable();
+
+    Optional<I> isEmptyTable();
 }
