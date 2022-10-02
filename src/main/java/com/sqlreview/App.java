@@ -5,10 +5,12 @@ import com.github.javafaker.Number;
 import com.sqlreview.entity.Author;
 import com.sqlreview.entity.Conference;
 import com.sqlreview.entity.Paper;
+import com.sqlreview.entity.Writes;
 import com.sqlreview.exception.DaoException;
 import com.sqlreview.facade.entity.AuthorOperatorFacadeImpl;
 import com.sqlreview.facade.entity.ConferenceOperatorFacadeImpl;
 import com.sqlreview.facade.entity.PaperOperatorFacadeImpl;
+import com.sqlreview.facade.entity.WritesOperatorFacadeImpl;
 
 import java.util.logging.Logger;
 
@@ -28,6 +30,8 @@ public class App
     private static AuthorOperatorFacadeImpl authorOperatorFacade;
 
     private static ConferenceOperatorFacadeImpl conferenceOperatorFacade;
+
+    private static WritesOperatorFacadeImpl writesOperatorFacade;
     public static void main( String[] args )
     {
         init();
@@ -35,6 +39,7 @@ public class App
         insertPapers();
         insertAuthors();
         insertConferences();
+        insertWrites();
 
     }
 
@@ -43,6 +48,7 @@ public class App
         paperOperatorFacade = PaperOperatorFacadeImpl.getInstance();
         authorOperatorFacade = AuthorOperatorFacadeImpl.getInstance();
         conferenceOperatorFacade = ConferenceOperatorFacadeImpl.getInstance();
+        writesOperatorFacade = WritesOperatorFacadeImpl.getInstance();
     }
 
     private static void insertPapers(){
@@ -94,7 +100,27 @@ public class App
 
         }
     }
+
+    private static void insertWrites(){
+        for (int i = 1; i <= NUM_OF_DATE; i++){
+            Number number = FAKER.number();
+            int authorId = number.numberBetween(1, NUM_OF_DATE);
+            int paperId = number.numberBetween(1, NUM_OF_DATE);
+
+            Writes testWrites = new Writes(authorId, paperId);
+            try{
+                writesOperatorFacade.addRow(testWrites);
+            }catch (DaoException ex){
+                throw new RuntimeException(ex);
+            }
+
+        }
+    }
+
     private static void cleanTables(){
+        if (!writesOperatorFacade.isEmpty()){
+            writesOperatorFacade.deleteTable();
+        }
         if (!paperOperatorFacade.isEmpty()){
             paperOperatorFacade.deleteTable();
         }
