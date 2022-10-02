@@ -91,7 +91,11 @@ public class AuthorDao implements Dao<Author, Integer> {
                 if (resultSet.next()) {
                     int empty = resultSet.getInt("isEmpty");
                     isEmpty = Optional.of(empty);
-                    LOGGER.log(Level.INFO, "The table is empty? {0}", empty);
+                    if (isEmpty.get().intValue()==1){
+                        LOGGER.log(Level.INFO, "The table is empty? FALSE");
+                    }else{
+                        LOGGER.log(Level.INFO, "The table is empty? TRUE");
+                    }
                 }
             } catch (SQLException ex) {
                 LOGGER.log(Level.SEVERE, null, ex);

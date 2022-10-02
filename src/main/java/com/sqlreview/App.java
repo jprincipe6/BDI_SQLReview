@@ -21,6 +21,7 @@ public class App
     private static final Logger LOGGER =
             Logger.getLogger(App.class.getName());
     private static final Integer NUM_OF_DATA = 20;
+    public static final int YEAR = 2023;
 
     private static Faker FAKER;
     private static PaperOperatorFacadeImpl paperOperatorFacade;
@@ -138,7 +139,7 @@ public class App
             boolean isAccepted = (numAccepted == 1) ? false : true;
 
             Calendar utilDate = Calendar.getInstance();
-            utilDate.set(2023,number.numberBetween(1, 12), number.numberBetween(1, 30));
+            utilDate.set(YEAR,number.numberBetween(1, 12), number.numberBetween(1, 30));
             Date currentTimestamp = new Date(utilDate.getTime().getTime());
             if(submitsOperatorFacade.isDuplicate(paperId, confId)){
                 i = (NUM_OF_DATA - (NUM_OF_DATA-i)-1);
