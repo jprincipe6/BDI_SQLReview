@@ -1,9 +1,12 @@
 
-
+-- Select the number of conference belonging to each ranking.
 SELECT count(*) AS numberOfConferences, ranking
     FROM conference
     GROUP BY ranking
     ORDER BY ranking ASC;
+
+-- Select all the abstracts of the papers written (or co-written)
+-- by the author whose name is ‘Alex’ or ‘Alexander’.
 
 SELECT paper.title, paper.abstract, author.name
     FROM paper INNER JOIN
@@ -12,7 +15,7 @@ SELECT paper.title, paper.abstract, author.name
     WHERE author.name LIKE ('Ga%')
         OR author.name LIKE ('Gr%');
 
-
+-- Select the names of all the authors that cited themselves.
 SELECT author.name, cites.paperIdFrom, cites.paperIdto
     FROM author
         INNER JOIN writes
@@ -24,6 +27,8 @@ SELECT author.name, cites.paperIdFrom, cites.paperIdto
             FROM writes
             WHERE cites.paperIdFrom = writes.paperId);
 
+-- Create a view PublishesIn(authorID, confID) containing all the pairs (authorID, confID)
+-- such that there is at least one publication by authorID accepted at confID.
 CREATE VIEW PublishesIn AS
   SELECT writes.authorId, conference.confId
   FROM writes
@@ -36,7 +41,8 @@ CREATE VIEW PublishesIn AS
   ORDER BY writes.authorid desc;
 
 
-
+-- Select the title of all the papers co-authored by the author ‘Alex’ (the papers
+-- where ‘Alex’ is the only author should not be part of the result).
 SELECT paper.title
     FROM paper
         INNER JOIN writes
